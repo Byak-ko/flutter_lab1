@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'pages/button_page.dart';
 import 'pages/checkbox_page.dart';
 import 'pages/lists_page.dart';
 
@@ -14,6 +15,7 @@ class MyApp extends StatelessWidget {
   static const String secondRoute = '/second';
   static const String listsRoute = '/lab2';
   static const String checkboxRoute = '/lab3';
+  static const String buttonRoute = '/lab4';
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +28,7 @@ class MyApp extends StatelessWidget {
         secondRoute: (context) => const SecondPage(),
         listsRoute: (context) => const ListsPage(),
         checkboxRoute: (context) => const CheckboxPage(),
+        buttonRoute: (context) => const ButtonPage(),
       },
     );
   }
@@ -84,6 +87,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.pushNamed(context, MyApp.checkboxRoute),
               icon: const Icon(Icons.check_box_outlined),
               label: const Text('Лаба 3: CheckBox'),
+            ),
+            const SizedBox(height: 8),
+            OutlinedButton.icon(
+              onPressed: () => Navigator.pushNamed(context, MyApp.buttonRoute),
+              icon: const Icon(Icons.smart_button),
+              label: const Text('Лаба 4: Button'),
             ),
           ],
         ),
