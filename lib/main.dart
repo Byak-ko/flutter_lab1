@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'pages/lists_page.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -9,18 +11,18 @@ class MyApp extends StatelessWidget {
 
   static const String homeRoute = '/';
   static const String secondRoute = '/second';
+  static const String listsRoute = '/lab2';
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Lab 1',
-      theme: ThemeData(
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
-      ),
+      theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
       initialRoute: homeRoute,
       routes: {
         homeRoute: (context) => const MyHomePage(title: 'Flutter Lab 1 — Home'),
         secondRoute: (context) => const SecondPage(),
+        listsRoute: (context) => const ListsPage(),
       },
     );
   }
@@ -66,6 +68,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.pushNamed(context, MyApp.secondRoute);
               },
               child: const Text('Next'),
+            ),
+            const SizedBox(height: 32),
+            OutlinedButton.icon(
+              onPressed: () => Navigator.pushNamed(context, MyApp.listsRoute),
+              icon: const Icon(Icons.list),
+              label: const Text('Лаба 2: Списки'),
             ),
           ],
         ),

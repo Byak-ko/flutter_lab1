@@ -18,7 +18,9 @@ void main() {
     expect(find.text('1'), findsOneWidget);
   });
 
-  testWidgets('Next opens second page, Back returns', (WidgetTester tester) async {
+  testWidgets('Next opens second page, Back returns', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(const MyApp());
 
     await tester.tap(find.text('Next'));
