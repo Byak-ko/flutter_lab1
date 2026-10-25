@@ -20,11 +20,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Lab 1',
+      title: 'Flutter labs',
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
       initialRoute: homeRoute,
       routes: {
-        homeRoute: (context) => const MyHomePage(title: 'Flutter Lab 1 — Home'),
+        homeRoute: (context) => const MyHomePage(title: 'Flutter labs'),
         secondRoute: (context) => const SecondPage(),
         listsRoute: (context) => const ListsPage(),
         checkboxRoute: (context) => const CheckboxPage(),
@@ -59,6 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
+      drawer: const LabsDrawer(),
       body: Center(
         child: Column(
           mainAxisAlignment: .center,
@@ -75,25 +76,6 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               child: const Text('Next'),
             ),
-            const SizedBox(height: 32),
-            OutlinedButton.icon(
-              onPressed: () => Navigator.pushNamed(context, MyApp.listsRoute),
-              icon: const Icon(Icons.list),
-              label: const Text('Лаба 2: Списки'),
-            ),
-            const SizedBox(height: 8),
-            OutlinedButton.icon(
-              onPressed: () =>
-                  Navigator.pushNamed(context, MyApp.checkboxRoute),
-              icon: const Icon(Icons.check_box_outlined),
-              label: const Text('Лаба 3: CheckBox'),
-            ),
-            const SizedBox(height: 8),
-            OutlinedButton.icon(
-              onPressed: () => Navigator.pushNamed(context, MyApp.buttonRoute),
-              icon: const Icon(Icons.smart_button),
-              label: const Text('Лаба 4: Button'),
-            ),
           ],
         ),
       ),
@@ -101,6 +83,52 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
+
+class LabsDrawer extends StatelessWidget {
+  const LabsDrawer({super.key});
+
+  void _open(BuildContext context, String route) {
+    Navigator.pop(context);
+    Navigator.pushNamed(context, route);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: SafeArea(
+        child: ListView(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+              child: Text(
+                'Лабораторні',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.list),
+              title: const Text('Списки'),
+              subtitle: const Text('Лаба 2'),
+              onTap: () => _open(context, MyApp.listsRoute),
+            ),
+            ListTile(
+              leading: const Icon(Icons.check_box_outlined),
+              title: const Text('Чекбокси'),
+              subtitle: const Text('Лаба 3'),
+              onTap: () => _open(context, MyApp.checkboxRoute),
+            ),
+            ListTile(
+              leading: const Icon(Icons.smart_button),
+              title: const Text('Кнопки'),
+              subtitle: const Text('Лаба 4'),
+              onTap: () => _open(context, MyApp.buttonRoute),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -108,7 +108,7 @@ class _ListsPageState extends State<ListsPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Лаба 2: Списки'),
+        title: const Text('Списки'),
         actions: [
           IconButton(
             tooltip: 'Лише обрані',
@@ -126,7 +126,7 @@ class _ListsPageState extends State<ListsPage> {
       ),
       body: Column(
         children: [
-          if (_source != null) _SourceBanner(source: _source!),
+          if (_source == DataSource.cache) const _OfflineBanner(),
           if (_loading) const LinearProgressIndicator(),
           Expanded(child: _buildBody(entries)),
         ],
@@ -142,8 +142,8 @@ class _ListsPageState extends State<ListsPage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                'Помилка завантаження: $_error',
+              const Text(
+                'Не вдалося завантажити дані.\nПеревір підключення до інтернету.',
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 12),
@@ -179,24 +179,25 @@ class _ListsPageState extends State<ListsPage> {
   }
 }
 
-class _SourceBanner extends StatelessWidget {
-  const _SourceBanner({required this.source});
-
-  final DataSource source;
+class _OfflineBanner extends StatelessWidget {
+  const _OfflineBanner();
 
   @override
   Widget build(BuildContext context) {
-    final online = source == DataSource.api;
     final scheme = Theme.of(context).colorScheme;
     return Container(
       width: double.infinity,
-      color: online ? scheme.secondaryContainer : scheme.errorContainer,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-      child: Text(
-        online
-            ? 'Дані завантажено з API і збережено в локальну БД'
-            : 'Офлайн: показано дані з локальної БД',
-        style: Theme.of(context).textTheme.bodySmall,
+      color: scheme.errorContainer,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Row(
+        children: [
+          Icon(Icons.cloud_off, size: 18, color: scheme.onErrorContainer),
+          const SizedBox(width: 8),
+          Text(
+            'Немає інтернету, показано збережені дані',
+            style: TextStyle(color: scheme.onErrorContainer),
+          ),
+        ],
       ),
     );
   }

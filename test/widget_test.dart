@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -32,5 +31,17 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(SecondPage), findsNothing);
     expect(find.byType(MyHomePage), findsOneWidget);
+  });
+
+  testWidgets('drawer opens lab pages', (WidgetTester tester) async {
+    await tester.pumpWidget(const MyApp());
+
+    await tester.tap(find.byTooltip('Open navigation menu'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Чекбокси'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(Drawer), findsNothing);
+    expect(find.text('Усі інгредієнти'), findsOneWidget);
   });
 }

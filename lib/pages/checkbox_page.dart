@@ -52,14 +52,14 @@ class _CheckboxPageState extends State<CheckboxPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Лаба 3: CheckBox з трьома станами'),
+        title: const Text('Чекбокси'),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          _Section(title: 'Група', root: _toppings),
+          _Section(title: 'Піца', root: _toppings),
           const SizedBox(height: 16),
-          _Section(title: 'Вкладені групи', root: _notifications),
+          _Section(title: 'Сповіщення', root: _notifications),
         ],
       ),
     );
@@ -72,11 +72,12 @@ class _Section extends StatelessWidget {
   final String title;
   final CheckboxNode root;
 
-  static String _stateName(bool? value) => switch (value) {
-    true => 'помічений',
-    false => 'непомічений',
-    null => 'частково помічений',
-  };
+  String get _summary {
+    final selected = root.checkedLeaves.map((n) => n.label).toList();
+    return selected.isEmpty
+        ? 'Нічого не обрано'
+        : 'Обрано: ${selected.join(', ')}';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,11 +97,7 @@ class _Section extends StatelessWidget {
               listenable: root,
               builder: (context, _) => Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Text(
-                  'Стан: ${_stateName(root.value)} · обрано: '
-                  '${root.checkedLeaves.map((n) => n.label).join(', ')}',
-                  style: textTheme.bodySmall,
-                ),
+                child: Text(_summary, style: textTheme.bodySmall),
               ),
             ),
           ],

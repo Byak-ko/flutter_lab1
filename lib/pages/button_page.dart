@@ -11,27 +11,26 @@ class ButtonPage extends StatefulWidget {
 
 class _ButtonPageState extends State<ButtonPage> {
   int _clicks = 0;
-  String _last = '—';
   bool _enabled = true;
 
-  void _press(String name) => setState(() {
-    _clicks++;
-    _last = name;
-  });
+  VoidCallback? get _onPressed =>
+      _enabled ? () => setState(() => _clicks++) : null;
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final primary = Theme.of(context).colorScheme.primary;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Лаба 4: компонент Button'),
+        title: const Text('Кнопки'),
       ),
       body: ListView(
         padding: const EdgeInsets.all(24),
         children: [
-          Text('Натискань: $_clicks', style: textTheme.headlineSmall),
-          Text('Остання кнопка: $_last'),
+          Text(
+            'Натискань: $_clicks',
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
           const SizedBox(height: 24),
           Wrap(
             spacing: 16,
@@ -39,20 +38,21 @@ class _ButtonPageState extends State<ButtonPage> {
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               PaintedButton(
-                label: 'Primary',
+                label: 'Надіслати',
                 autofocus: true,
-                onPressed: _enabled ? () => _press('Primary') : null,
+                style: PaintedButtonStyle.filled(primary),
+                onPressed: _onPressed,
               ),
               PaintedButton(
                 label: 'Зберегти',
                 icon: Icons.save,
                 style: PaintedButtonStyle.filled(const Color(0xFF2E7D32)),
-                onPressed: _enabled ? () => _press('Зберегти') : null,
+                onPressed: _onPressed,
               ),
               PaintedButton(
-                label: 'Outlined',
-                style: PaintedButtonStyle.outlined(const Color(0xFF6750A4)),
-                onPressed: _enabled ? () => _press('Outlined') : null,
+                label: 'Скасувати',
+                style: PaintedButtonStyle.outlined(primary),
+                onPressed: _onPressed,
               ),
               PaintedButton(
                 label: 'Видалити',
@@ -61,40 +61,32 @@ class _ButtonPageState extends State<ButtonPage> {
                   const Color(0xFFC62828),
                   radius: 4,
                 ),
-                onPressed: _enabled ? () => _press('Видалити') : null,
+                onPressed: _onPressed,
               ),
               PaintedButton(
-                label: 'Велика кругла',
-                style:
-                    PaintedButtonStyle.filled(
-                      const Color(0xFFFFB300),
-                      radius: 32,
-                    ).copyWith(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 40,
-                        vertical: 22,
-                      ),
-                      textStyle: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                onPressed: _enabled ? () => _press('Велика кругла') : null,
+                label: 'Купити',
+                icon: Icons.shopping_cart,
+                style: PaintedButtonStyle.filled(primary, radius: 28).copyWith(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 36,
+                    vertical: 18,
+                  ),
+                  textStyle: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                onPressed: _onPressed,
               ),
-              const PaintedButton(label: 'Завжди вимкнена', onPressed: null),
+              const PaintedButton(label: 'Недоступно', onPressed: null),
             ],
           ),
           const SizedBox(height: 24),
           SwitchListTile(
-            title: const Text('Кнопки увімкнені'),
+            contentPadding: EdgeInsets.zero,
+            title: const Text('Кнопки активні'),
             value: _enabled,
             onChanged: (v) => setState(() => _enabled = v),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Кнопки намальовані через CustomPainter: фон, тінь, рамка, '
-            'хвиля натискання, фокус (Tab) і активація клавішами Enter/Space.',
-            style: textTheme.bodySmall,
           ),
         ],
       ),

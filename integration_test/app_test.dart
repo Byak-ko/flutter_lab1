@@ -15,6 +15,13 @@ Future<void> _waitFor(WidgetTester tester, Finder finder) async {
 Finder _painted(String label) =>
     find.byWidgetPredicate((w) => w is PaintedButton && w.label == label);
 
+Future<void> _openLab(WidgetTester tester, String title) async {
+  await tester.tap(find.byTooltip('Open navigation menu'));
+  await tester.pumpAndSettle();
+  await tester.tap(find.text(title));
+  await tester.pumpAndSettle();
+}
+
 Future<void> _back(WidgetTester tester) async {
   await tester.pageBack();
   await tester.pumpAndSettle();
@@ -35,7 +42,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(MyHomePage), findsOneWidget);
 
-    await tester.tap(find.text('Лаба 2: Списки'));
+    await _openLab(tester, 'Списки');
     await _waitFor(tester, find.byType(PostTile));
     expect(find.byType(UserHeaderTile), findsWidgets);
     final firstStar = find.descendant(
@@ -50,7 +57,7 @@ void main() {
         .isFavorite;
     await _back(tester);
 
-    await tester.tap(find.text('Лаба 2: Списки'));
+    await _openLab(tester, 'Списки');
     await _waitFor(tester, find.byType(PostTile));
     expect(
       tester.widget<PostTile>(find.byType(PostTile).first).post.isFavorite,
@@ -61,8 +68,7 @@ void main() {
     await tester.pumpAndSettle();
     await _back(tester);
 
-    await tester.tap(find.text('Лаба 3: CheckBox'));
-    await tester.pumpAndSettle();
+    await _openLab(tester, 'Чекбокси');
     Checkbox box(String label) => tester.widget<Checkbox>(
       find.descendant(
         of: find.widgetWithText(CheckboxListTile, label),
@@ -76,13 +82,11 @@ void main() {
     expect(box('Гриби').value, isTrue);
     await _back(tester);
 
-    await tester.tap(find.text('Лаба 4: Button'));
-    await tester.pumpAndSettle();
-    await tester.tap(_painted('Primary'));
+    await _openLab(tester, 'Кнопки');
+    await tester.tap(_painted('Надіслати'));
     await tester.tap(_painted('Зберегти'));
-    await tester.tap(_painted('Завжди вимкнена'), warnIfMissed: false);
+    await tester.tap(_painted('Недоступно'), warnIfMissed: false);
     await tester.pumpAndSettle();
     expect(find.text('Натискань: 2'), findsOneWidget);
-    expect(find.text('Остання кнопка: Зберегти'), findsOneWidget);
   });
 }
